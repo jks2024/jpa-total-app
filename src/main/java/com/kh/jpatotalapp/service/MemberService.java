@@ -1,5 +1,4 @@
 package com.kh.jpatotalapp.service;
-
 import com.kh.jpatotalapp.dto.MemberDto;
 import com.kh.jpatotalapp.entity.Member;
 import com.kh.jpatotalapp.repository.MemberRepository;
@@ -24,7 +23,6 @@ public class MemberService {
         List<MemberDto> memberDtos = new ArrayList<>();
         for(Member member : members) {
             MemberDto memberDto = new MemberDto();
-            memberDto.setUserId(member.getUserId());
             memberDto.setEmail(member.getEmail());
             memberDto.setName(member.getName());
             memberDto.setRegDate(member.getRegDate());
@@ -32,20 +30,6 @@ public class MemberService {
         }
         return memberDtos;
     }
-    // 회원 전체 조회 (페이징)
-//    public List<MemberDto> getMemberList(int page, int size) {
-//        List<Member> members = memberRepository.findAll();
-//        List<MemberDto> memberDtos = new ArrayList<>();
-//        for(Member member : members) {
-//            MemberDto memberDto = new MemberDto();
-//            memberDto.setUserId(member.getUserId());
-//            memberDto.setEmail(member.getEmail());
-//            memberDto.setName(member.getName());
-//            memberDto.setRegDate(member.getRegDate());
-//            memberDtos.add(memberDto);
-//        }
-//        return memberDtos;
-//    }
 
     // 회원전체 조회 (스트림)
 //    public List<MemberDto> getMemberList() {
@@ -61,15 +45,12 @@ public class MemberService {
 //        return memberDtos;
 //    }
 
-
-
     // 회원 상세 조회
     public MemberDto getMemberDetail(String email) {
         Member member = memberRepository.findByEmail(email).orElseThrow(
                 () -> new RuntimeException("해당 회원이 존재하지 않습니다.")
         );
         MemberDto memberDto = new MemberDto();
-        memberDto.setUserId(member.getUserId());
         memberDto.setEmail(member.getEmail());
         memberDto.setName(member.getName());
         memberDto.setRegDate(member.getRegDate());
@@ -82,8 +63,8 @@ public class MemberService {
     }
 
     // 로그인
-    public boolean login(String userId, String pwd) {
-        Optional<Member> member = memberRepository.findByUserIdAndPassword(userId, pwd);
+    public boolean login(String email, String pwd) {
+        Optional<Member> member = memberRepository.findByEmailAndPassword(email, pwd);
         return member.isPresent();
     }
     // 회원 삭제

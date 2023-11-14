@@ -6,12 +6,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
+import static com.kh.jpatotalapp.utils.Common.CORS_ORIGIN;
+
 @Slf4j
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = CORS_ORIGIN)
 @RestController
-@RequestMapping("api/member")
+@RequestMapping("/users")
 @RequiredArgsConstructor
 public class MemberController {
     private final MemberService memberService;
@@ -31,7 +32,6 @@ public class MemberController {
     @PutMapping("/modify/{email}")
     public ResponseEntity<Boolean> memberModify(@RequestBody MemberDto memberDto) {
         Member member = new Member();
-        member.setUserId(memberDto.getUserId());
         member.setEmail(memberDto.getEmail());
         member.setName(memberDto.getName());
         member.setRegDate(memberDto.getRegDate());
@@ -42,7 +42,6 @@ public class MemberController {
     @PostMapping("/new")
     public ResponseEntity<Boolean> memberRegister(@RequestBody MemberDto memberDto) {
         Member member = new Member();
-        member.setUserId(memberDto.getUserId());
         member.setPassword(memberDto.getPwd());
         member.setEmail(memberDto.getEmail());
         member.setName(memberDto.getName());
@@ -53,7 +52,7 @@ public class MemberController {
     // 로그인
     @PostMapping("/login")
     public ResponseEntity<Boolean> memberLogin(@RequestBody MemberDto memberDto) {
-        boolean isTrue = memberService.login(memberDto.getUserId(), memberDto.getPwd());
+        boolean isTrue = memberService.login(memberDto.getEmail(), memberDto.getPwd());
         return ResponseEntity.ok(isTrue);
     }
     // 회원 존재 여부 확인

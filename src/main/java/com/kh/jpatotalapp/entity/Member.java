@@ -1,9 +1,8 @@
 package com.kh.jpatotalapp.entity;
-
 import lombok.*;
-
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "member")
@@ -14,18 +13,16 @@ public class Member {
     @Column(name = "member_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String userId;
     private String name;
     private String password;
     @Column(unique = true)
     private String email;
+    private String image;
     private Date regDate;
-    @Builder
-    public Member(String user, String email, String password, String name, Date regDate) {
-        this.userId = user;
-        this.email = email;
-        this.password = password;
-        this.name = name;
-        this.regDate = regDate;
-    }
+
+    @OneToMany(mappedBy = "member")
+    private List<Comment> comments;
+
+    @OneToMany(mappedBy = "member")
+    private List<Board> boards;
 }
