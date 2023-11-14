@@ -24,4 +24,9 @@ public class Board {
     @ManyToOne
     @JoinColumn(name = "member_id") // 외래키
     private Member member; // 작성자
+
+    @PrePersist
+    public void prePersist() {
+        regDate = new Date();
+    }
 }

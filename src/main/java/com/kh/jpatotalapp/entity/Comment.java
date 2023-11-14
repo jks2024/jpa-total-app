@@ -4,6 +4,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Getter @Setter @ToString
@@ -25,5 +26,10 @@ public class Comment {
     @Column(length = 1000)
     private String content;
 
-    private String regDate;
+    private Date regDate;
+
+    @PrePersist
+    public void prePersist() {
+        regDate = new Date();
+    }
 }

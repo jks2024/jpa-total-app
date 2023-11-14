@@ -51,5 +51,4 @@ public class MovieController {
         return ResponseEntity.ok(list);
     }
 
-
 }

@@ -1,6 +1,5 @@
 package com.kh.jpatotalapp.controller;
 import com.kh.jpatotalapp.dto.MemberDto;
-import com.kh.jpatotalapp.entity.Member;
 import com.kh.jpatotalapp.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +21,13 @@ public class MemberController {
         List<MemberDto> list = memberService.getMemberList();
         return ResponseEntity.ok(list);
     }
+    // 회원 조회 페이지네이션
+    @GetMapping("/list/page")
+    public ResponseEntity<List<MemberDto>> memberList(@RequestParam(defaultValue = "0") int page,
+                                                      @RequestParam(defaultValue = "20") int size) {
+        List<MemberDto> list = memberService.getMemberList(page, size);
+        return ResponseEntity.ok(list);
+    }
     // 회원 상세 조회
     @GetMapping("/detail/{userid}")
     public ResponseEntity<MemberDto> memberDetail(String userid) {
@@ -31,22 +37,13 @@ public class MemberController {
     // 회원 수정
     @PutMapping("/modify/{email}")
     public ResponseEntity<Boolean> memberModify(@RequestBody MemberDto memberDto) {
-        Member member = new Member();
-        member.setEmail(memberDto.getEmail());
-        member.setName(memberDto.getName());
-        member.setRegDate(memberDto.getRegDate());
-        boolean isTrue = memberService.saveMember(member);
+        boolean isTrue = memberService.modifyMember(memberDto);
         return ResponseEntity.ok(isTrue);
     }
     // 회원 등록
     @PostMapping("/new")
     public ResponseEntity<Boolean> memberRegister(@RequestBody MemberDto memberDto) {
-        Member member = new Member();
-        member.setPassword(memberDto.getPwd());
-        member.setEmail(memberDto.getEmail());
-        member.setName(memberDto.getName());
-        member.setRegDate(memberDto.getRegDate());
-        boolean isTrue = memberService.saveMember(member);
+        boolean isTrue = memberService.saveMember(memberDto);
         return ResponseEntity.ok(isTrue);
     }
     // 로그인
@@ -64,7 +61,7 @@ public class MemberController {
     }
     // 회원 삭제
     @DeleteMapping("/del/{email}")
-    public ResponseEntity<Boolean> memberDelete(String email) {
+    public ResponseEntity<Boolean> memberDelete(@PathVariable String email) {
         boolean isTrue = memberService.deleteMember(email);
         return ResponseEntity.ok(isTrue);
     }

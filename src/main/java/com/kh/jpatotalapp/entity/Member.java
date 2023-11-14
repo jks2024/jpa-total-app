@@ -25,4 +25,9 @@ public class Member {
 
     @OneToMany(mappedBy = "member")
     private List<Board> boards;
+
+    @PrePersist // DB에 INSERT 되기 전에 실행되는 메소드
+    public void prePersist() {
+        regDate = new Date();
+    }
 }

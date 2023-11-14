@@ -2,6 +2,7 @@ package com.kh.jpatotalapp.dto;
 
 import lombok.Getter;
 import lombok.Setter;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -11,5 +12,5 @@ public class BoardDto {
     private String title;
     private String content;
     private String img;
-    private String regDate;
+    private Date regDate;
 }
