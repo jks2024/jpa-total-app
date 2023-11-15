@@ -46,4 +46,9 @@ public class CommentController {
     // 댓글 목록 페이징
     // 댓글 상세 조회
     // 댓글 검색
+    @GetMapping("/search")
+    public ResponseEntity<List<CommentDto>> commentSearch(@RequestParam String keyword) {
+        List<CommentDto> list = commentService.getCommentList(keyword);
+        return ResponseEntity.ok(list);
+    }
 }

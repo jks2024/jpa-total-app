@@ -82,6 +82,16 @@ public class CommentService {
     // 댓글 목록 페이징
     // 댓글 상세
 
+    // 댓글 검색
+    public List<CommentDto> getCommentList(String keyword) {
+        List<Comment> comments = commentRepository.findByContentContaining(keyword);
+        List<CommentDto> commentDtos = new ArrayList<>();
+        for (Comment comment : comments) {
+            commentDtos.add(convertEntityToDto(comment));
+        }
+        return commentDtos;
+    }
+
     // 댓글 엔티티를 DTO로 변환
     private CommentDto convertEntityToDto(Comment comment) {
         CommentDto commentDto = new CommentDto();

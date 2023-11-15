@@ -1,8 +1,10 @@
 package com.kh.jpatotalapp.service;
 import com.kh.jpatotalapp.dto.BoardDto;
 import com.kh.jpatotalapp.entity.Board;
+import com.kh.jpatotalapp.entity.Category;
 import com.kh.jpatotalapp.entity.Member;
 import com.kh.jpatotalapp.repository.BoardRepository;
+import com.kh.jpatotalapp.repository.CategoryRepository;
 import com.kh.jpatotalapp.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -18,6 +20,7 @@ import java.util.List;
 public class BoardService {
     private final BoardRepository boardRepository;
     private final MemberRepository memberRepository;
+    private final CategoryRepository categoryRepository;
     // 게시글 등록
     public boolean saveBoard(BoardDto boardDto) {
         try {
@@ -25,7 +28,11 @@ public class BoardService {
             Member member = memberRepository.findByEmail(boardDto.getEmail()).orElseThrow(
                     () -> new RuntimeException("해당 회원이 존재하지 않습니다.")
             );
+            Category category = categoryRepository.findById(boardDto.getCategoryId()).orElseThrow(
+                    () -> new RuntimeException("해당 카테고리가 존재하지 않습니다.")
+            );
             board.setTitle(boardDto.getTitle());
+            board.setCategory(category);
             board.setContent(boardDto.getContent());
             board.setImgPath(boardDto.getImg());
             board.setMember(member);
@@ -103,6 +110,7 @@ public class BoardService {
         BoardDto boardDto = new BoardDto();
         boardDto.setBoardId(board.getBoardId());
         boardDto.setTitle(board.getTitle());
+        boardDto.setCategoryId(board.getCategory().getCategoryId());
         boardDto.setContent(board.getContent());
         boardDto.setImg(board.getImgPath());
         boardDto.setEmail(board.getMember().getEmail());

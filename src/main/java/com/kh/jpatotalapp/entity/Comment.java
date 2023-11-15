@@ -15,11 +15,11 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long commentId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY) // 지연 전략
     @JoinColumn(name = "board_id")
     private Board board;
 
-    @ManyToOne // 다대일 관계 설정 : 한 회원은 여러 댓글을 작성할 수 있다.
+    @ManyToOne(fetch = FetchType.LAZY) // 지연 전략
     @JoinColumn(name = "member_id")
     private Member member;
 
@@ -28,7 +28,7 @@ public class Comment {
 
     private Date regDate;
 
-    @PrePersist
+    @PrePersist // DB에 INSERT 되기 전에 실행되는 메소드
     public void prePersist() {
         regDate = new Date();
     }

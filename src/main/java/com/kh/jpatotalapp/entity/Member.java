@@ -20,10 +20,10 @@ public class Member {
     private String image;
     private Date regDate;
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member",fetch = FetchType.LAZY)
     private List<Comment> comments;
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
     private List<Board> boards;
 
     @PrePersist // DB에 INSERT 되기 전에 실행되는 메소드
