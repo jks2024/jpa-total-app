@@ -4,7 +4,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import javax.persistence.*;
-import java.util.Date;  // JPA에서는 java.util.Date를 사용한다.
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -20,7 +20,11 @@ public class Board {
     private String title;
     private String content;
     private String imgPath;
-    private Date regDate;
+    private LocalDateTime regDate;
+    @PrePersist
+    public void prePersist() {
+        regDate = LocalDateTime.now();
+    }
 
     @ManyToOne(fetch = FetchType.LAZY) // 지연 전략
     @JoinColumn(name = "member_id") // 외래키
@@ -34,9 +38,4 @@ public class Board {
     // Board와 Comment는 1:N 관계, mappedBy는 연관관계의 주인이 아니다(난 FK가 아니에요)라는 의미
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments; // 댓글 목록
-
-    @PrePersist
-    public void prePersist() {
-        regDate = new Date();
-    }
 }

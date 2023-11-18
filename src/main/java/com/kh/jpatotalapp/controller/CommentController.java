@@ -38,8 +38,9 @@ public class CommentController {
         return ResponseEntity.ok(result);
     }
     // 댓글 목록 조회
-    @GetMapping("/list")
-    public ResponseEntity<List<CommentDto>> commentList(@RequestParam Long boardId) {
+    @GetMapping("/list/{boardId}")
+    public ResponseEntity<List<CommentDto>> commentList(@PathVariable Long boardId) {
+        log.info("boardId: {}", boardId);
         List<CommentDto> list = commentService.getCommentList(boardId);
         return ResponseEntity.ok(list);
     }

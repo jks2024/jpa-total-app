@@ -3,6 +3,7 @@ import com.kh.jpatotalapp.dto.MemberDto;
 import com.kh.jpatotalapp.entity.Member;
 import com.kh.jpatotalapp.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -10,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class MemberService {
@@ -58,7 +60,9 @@ public class MemberService {
 
     // 로그인
     public boolean login(String email, String pwd) {
+        log.info("email: {}, pwd: {}", email, pwd);
         Optional<Member> member = memberRepository.findByEmailAndPassword(email, pwd);
+        log.info("member: {}", member);
         return member.isPresent();
     }
     // 회원 삭제
@@ -100,6 +104,8 @@ public class MemberService {
         MemberDto memberDto = new MemberDto();
         memberDto.setEmail(member.getEmail());
         memberDto.setName(member.getName());
+        memberDto.setPwd(member.getPassword());
+        memberDto.setImage(member.getImage());
         memberDto.setRegDate(member.getRegDate());
         return memberDto;
     }

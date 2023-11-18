@@ -18,6 +18,10 @@ public class Category {
     private Long categoryId;
     private String categoryName;
 
+    @ManyToOne(fetch = FetchType.LAZY) // 지연 전략
+    @JoinColumn(name = "member_id") // 외래키
+    private Member member; // 작성자
+
     @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
     private List<Board> boards;
 }

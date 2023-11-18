@@ -1,7 +1,7 @@
 package com.kh.jpatotalapp.entity;
 import lombok.*;
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -18,7 +18,11 @@ public class Member {
     @Column(unique = true)
     private String email;
     private String image;
-    private Date regDate;
+    private LocalDateTime regDate;
+    @PrePersist
+    public void prePersist() {
+        regDate = LocalDateTime.now();
+    }
 
     @OneToMany(mappedBy = "member",fetch = FetchType.LAZY)
     private List<Comment> comments;
@@ -26,8 +30,4 @@ public class Member {
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
     private List<Board> boards;
 
-    @PrePersist // DB에 INSERT 되기 전에 실행되는 메소드
-    public void prePersist() {
-        regDate = new Date();
-    }
 }

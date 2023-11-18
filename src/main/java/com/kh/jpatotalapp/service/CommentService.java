@@ -68,15 +68,20 @@ public class CommentService {
     }
     // 댓글 목록 조회
     public List<CommentDto> getCommentList(Long boardId) {
-        Board board = boardRepository.findById(boardId).orElseThrow(
-                () -> new RuntimeException("해당 게시글이 존재하지 않습니다.")
-        );
-        List<Comment> comments = commentRepository.findByBoard(board);
-        List<CommentDto> commentDtos = new ArrayList<>();
-        for (Comment comment : comments) {
-            commentDtos.add(convertEntityToDto(comment));
+        try {
+            Board board = boardRepository.findById(boardId).orElseThrow(
+                    () -> new RuntimeException("해당 게시글이 존재하지 않습니다.")
+            );
+            List<Comment> comments = commentRepository.findByBoard(board);
+            List<CommentDto> commentDtos = new ArrayList<>();
+            for (Comment comment : comments) {
+                commentDtos.add(convertEntityToDto(comment));
+            }
+            return commentDtos;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
-        return commentDtos;
     }
 
     // 댓글 목록 페이징

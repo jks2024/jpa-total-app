@@ -2,7 +2,8 @@ package com.kh.jpatotalapp.dto;
 
 import lombok.Getter;
 import lombok.Setter;
-import java.util.Date;
+
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -11,5 +12,5 @@ public class CommentDto {
     private Long boardId;
     private String email;
     private String content;
-    private Date regDate;
+    private LocalDateTime regDate;
 }

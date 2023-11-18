@@ -1,7 +1,9 @@
 package com.kh.jpatotalapp.service;
 import com.kh.jpatotalapp.dto.CategoryDto;
 import com.kh.jpatotalapp.entity.Category;
+import com.kh.jpatotalapp.entity.Member;
 import com.kh.jpatotalapp.repository.CategoryRepository;
+import com.kh.jpatotalapp.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -12,11 +14,16 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CategoryService {
     private final CategoryRepository categoryRepository;
+    private final MemberRepository memberRepository;
     // 카테고리 등록
     public boolean saveCategory(CategoryDto categoryDto) {
         try {
             Category category = new Category();
+            Member member = memberRepository.findByEmail(categoryDto.getEmail()).orElseThrow(
+                    () -> new RuntimeException("해당 회원이 존재하지 않습니다.")
+            );
             category.setCategoryName(categoryDto.getCategoryName());
+            category.setMember(member);
             categoryRepository.save(category);
             return true;
         } catch (Exception e) {
@@ -30,7 +37,12 @@ public class CategoryService {
             Category category = categoryRepository.findById(id).orElseThrow(
                     () -> new RuntimeException("해당 카테고리가 존재하지 않습니다.")
             );
+            Member member = memberRepository.findByEmail(categoryDto.getEmail()).orElseThrow(
+                    () -> new RuntimeException("해당 회원이 존재하지 않습니다.")
+            );
             category.setCategoryName(categoryDto.getCategoryName());
+            category.setCategoryId(categoryDto.getCategoryId());
+            category.setMember(member);
             categoryRepository.save(category);
             return true;
         } catch (Exception e) {
@@ -65,6 +77,7 @@ public class CategoryService {
         CategoryDto categoryDto = new CategoryDto();
         categoryDto.setCategoryId(category.getCategoryId());
         categoryDto.setCategoryName(category.getCategoryName());
+        categoryDto.setEmail(category.getMember().getEmail());
         return categoryDto;
     }
 

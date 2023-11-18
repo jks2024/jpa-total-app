@@ -29,9 +29,9 @@ public class MemberController {
         return ResponseEntity.ok(list);
     }
     // 회원 상세 조회
-    @GetMapping("/detail/{userid}")
-    public ResponseEntity<MemberDto> memberDetail(String userid) {
-        MemberDto memberDto = memberService.getMemberDetail(userid);
+    @GetMapping("/detail/{email}")
+    public ResponseEntity<MemberDto> memberDetail(@PathVariable String email) {
+        MemberDto memberDto = memberService.getMemberDetail(email);
         return ResponseEntity.ok(memberDto);
     }
     // 회원 수정
@@ -57,7 +57,7 @@ public class MemberController {
     public ResponseEntity<Boolean> isMember(@RequestParam String email) {
         log.info("email: {}", email);
         boolean isReg = memberService.isMember(email);
-        return ResponseEntity.ok(isReg);
+        return ResponseEntity.ok(!isReg);
     }
     // 회원 삭제
     @DeleteMapping("/del/{email}")

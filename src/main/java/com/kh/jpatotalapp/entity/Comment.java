@@ -4,7 +4,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter @Setter @ToString
@@ -26,10 +26,9 @@ public class Comment {
     @Column(length = 1000)
     private String content;
 
-    private Date regDate;
-
-    @PrePersist // DB에 INSERT 되기 전에 실행되는 메소드
+    private LocalDateTime regDate;
+    @PrePersist
     public void prePersist() {
-        regDate = new Date();
+        regDate = LocalDateTime.now();
     }
 }
