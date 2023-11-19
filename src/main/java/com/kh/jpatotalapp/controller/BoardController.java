@@ -64,10 +64,11 @@ public class BoardController {
 
     // 페이지 수 조회
     @GetMapping("/count")
-    public Page<Board> listBoards(@RequestParam(defaultValue = "0") int page,
+    public ResponseEntity<Integer> listBoards(@RequestParam(defaultValue = "0") int page,
                                   @RequestParam(defaultValue = "10") int size) {
         PageRequest pageRequest = PageRequest.of(page, size);
-        return boardService.getBoards(pageRequest);
+        Integer pageCnt = boardService.getBoards(pageRequest);
+        return ResponseEntity.ok(pageCnt);
     }
 
 }

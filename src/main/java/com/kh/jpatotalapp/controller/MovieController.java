@@ -5,6 +5,7 @@ import com.kh.jpatotalapp.entity.Movie;
 import com.kh.jpatotalapp.service.MovieService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,6 +50,22 @@ public class MovieController {
     public ResponseEntity<List<MovieDto>> movieList() {
         List<MovieDto> list = movieService.getMovieList();
         return ResponseEntity.ok(list);
+    }
+    // 페이지네이션
+    @GetMapping("/list/page")
+    public ResponseEntity<List<MovieDto>> movieList(@RequestParam(defaultValue = "0") int page,
+                                                    @RequestParam(defaultValue = "10") int size) {
+        List<MovieDto> list = movieService.getMovieList(page, size);
+        log.info("list : {}", list);
+        return ResponseEntity.ok(list);
+    }
+    // 페이지 수 조회
+    @GetMapping("/list/count")
+    public ResponseEntity<Integer> movieCount(@RequestParam(defaultValue = "0") int page,
+                                           @RequestParam(defaultValue = "10") int size  ) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        int pageCnt = movieService.getMoviePage(pageRequest);
+        return ResponseEntity.ok(pageCnt);
     }
 
 }

@@ -47,9 +47,7 @@ public class MemberService {
                     () -> new RuntimeException("해당 회원이 존재하지 않습니다.")
             );
             member.setName(memberDto.getName());
-            member.setPassword(memberDto.getPwd());
             member.setImage(memberDto.getImage());
-            member.setRegDate(memberDto.getRegDate());
             memberRepository.save(member);
             return true;
         } catch (Exception e) {
@@ -86,6 +84,10 @@ public class MemberService {
             memberDtos.add(convertEntityToDto(member));
         }
         return memberDtos;
+    }
+    // 총 페이지 수
+    public int getMemberPage(Pageable pageable) {
+        return memberRepository.findAll(pageable).getTotalPages();
     }
 
     // 회원 조회 : 페이지 네이션

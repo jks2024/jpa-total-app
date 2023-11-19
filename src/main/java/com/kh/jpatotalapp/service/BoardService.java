@@ -119,7 +119,7 @@ public class BoardService {
     }
 
     // 페이지 수 조회
-    public Page<Board> getBoards(Pageable pageable) {
-        return boardRepository.findAll(pageable);
+    public int getBoards(Pageable pageable) {
+        return boardRepository.findAll(pageable).getTotalPages();
     }
 }

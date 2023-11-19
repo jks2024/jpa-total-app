@@ -3,6 +3,7 @@ import com.kh.jpatotalapp.dto.MemberDto;
 import com.kh.jpatotalapp.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -21,6 +22,15 @@ public class MemberController {
         List<MemberDto> list = memberService.getMemberList();
         return ResponseEntity.ok(list);
     }
+    // 총 페이지 수
+    @GetMapping("/list/count")
+    public ResponseEntity<Integer> memberCount(@RequestParam(defaultValue = "20") int page,
+                                               @RequestParam(defaultValue = "0") int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        int pageCnt = memberService.getMemberPage(pageRequest);
+        return ResponseEntity.ok(pageCnt);
+    }
+
     // 회원 조회 페이지네이션
     @GetMapping("/list/page")
     public ResponseEntity<List<MemberDto>> memberList(@RequestParam(defaultValue = "0") int page,
@@ -35,8 +45,9 @@ public class MemberController {
         return ResponseEntity.ok(memberDto);
     }
     // 회원 수정
-    @PutMapping("/modify/{email}")
+    @PutMapping("/modify")
     public ResponseEntity<Boolean> memberModify(@RequestBody MemberDto memberDto) {
+        log.info("memberDto: {}", memberDto.getEmail());
         boolean isTrue = memberService.modifyMember(memberDto);
         return ResponseEntity.ok(isTrue);
     }
