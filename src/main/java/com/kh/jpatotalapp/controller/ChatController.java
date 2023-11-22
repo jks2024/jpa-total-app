@@ -1,6 +1,7 @@
 package com.kh.jpatotalapp.controller;
 
-import com.kh.jpatotalapp.config.ChatRoom;
+import com.kh.jpatotalapp.dto.ChatRoomResDto;
+import com.kh.jpatotalapp.dto.ChatRoomReqDto;
 import com.kh.jpatotalapp.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,15 +20,15 @@ import static com.kh.jpatotalapp.utils.Common.CORS_ORIGIN;
 @RequestMapping("/chat")
 public class ChatController {
     private final ChatService chatService;
-    @PostMapping("/room")
-    public ResponseEntity<String> createRoom(@RequestBody String name) {
-        log.info(name);
-        ChatRoom room = chatService.createRoom(name);
+    @PostMapping("/new")
+    public ResponseEntity<String> createRoom(@RequestBody ChatRoomReqDto chatRoomDto) {
+        log.warn("chatRoomDto : {}", chatRoomDto);
+        ChatRoomResDto room = chatService.createRoom(chatRoomDto.getName());
         System.out.println(room.getRoomId());
         return new ResponseEntity<>(room.getRoomId(), HttpStatus.OK);
     }
-    @GetMapping
-    public List<ChatRoom> findAllRoom() {
+    @GetMapping("/list")
+    public List<ChatRoomResDto> findAllRoom() {
         return chatService.findAllRoom();
     }
 }

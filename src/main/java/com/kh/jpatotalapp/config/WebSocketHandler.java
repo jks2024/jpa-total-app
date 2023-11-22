@@ -1,7 +1,8 @@
 package com.kh.jpatotalapp.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kh.jpatotalapp.dto.ChatMessage;
+import com.kh.jpatotalapp.dto.ChatMessageDto;
+import com.kh.jpatotalapp.dto.ChatRoomResDto;
 import com.kh.jpatotalapp.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,8 +22,8 @@ public class WebSocketHandler extends TextWebSocketHandler {
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         String payload = message.getPayload();
         log.warn("{}", payload);
-        ChatMessage chatMessage = objectMapper.readValue(payload, ChatMessage.class);
-        ChatRoom chatRoom = chatService.findRoomById(chatMessage.getRoomId());
+        ChatMessageDto chatMessage = objectMapper.readValue(payload, ChatMessageDto.class);
+        ChatRoomResDto chatRoom = chatService.findRoomById(chatMessage.getRoomId());
         chatRoom.handlerActions(session, chatMessage, chatService);
     }
 

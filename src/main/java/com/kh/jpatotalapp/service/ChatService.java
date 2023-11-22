@@ -1,7 +1,7 @@
 package com.kh.jpatotalapp.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kh.jpatotalapp.config.ChatRoom;
+import com.kh.jpatotalapp.dto.ChatRoomResDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -10,6 +10,7 @@ import org.springframework.web.socket.WebSocketSession;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Slf4j
@@ -17,26 +18,27 @@ import java.util.*;
 @Service
 public class ChatService {
     private final ObjectMapper objectMapper;
-    private Map<String, ChatRoom> chatRooms;
+    private Map<String, ChatRoomResDto> chatRooms;
 
     @PostConstruct // 의존성 주입 이후 초기화를 수행하는 메소드
     private void init() {
         chatRooms = new LinkedHashMap<>();
     }
-    public List<ChatRoom> findAllRoom() {
+    public List<ChatRoomResDto> findAllRoom() {
         return new ArrayList<>(chatRooms.values());
     }
-    public ChatRoom findRoomById(String roomId) {
+    public ChatRoomResDto findRoomById(String roomId) {
         return chatRooms.get(roomId);
     }
 
     // 방 개설하기
-    public ChatRoom createRoom(String name) {
+    public ChatRoomResDto createRoom(String name) {
         String randomId = UUID.randomUUID().toString();
         log.info("UUID : " + randomId);
-        ChatRoom chatRoom = ChatRoom.builder()
+        ChatRoomResDto chatRoom = ChatRoomResDto.builder()
                 .roomId(randomId)
                 .name(name)
+                .regDate(LocalDateTime.now())
                 .build();
         chatRooms.put(randomId, chatRoom);
         return chatRoom;
