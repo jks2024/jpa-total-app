@@ -20,6 +20,10 @@ public class ChatRoomResDto {
 
     @JsonIgnore // 이 어노테이션으로 WebSocketSession의 직렬화를 방지
     private Set<WebSocketSession> sessions;
+    // 세션 수가 0인지 확인하는 메서드
+    public boolean isSessionEmpty() {
+        return this.sessions.size() == 0;
+    }
 
     @Builder
     public ChatRoomResDto(String roomId, String name, LocalDateTime regDate) {
@@ -45,7 +49,20 @@ public class ChatRoomResDto {
         } else {
             log.debug("Message received: " + chatMessage.getMessage());
         }
+        if (this.isSessionEmpty()) {
+            // 채팅방이 빈 상태이면 채팅방을 제거
+            chatService.removeRoom(this.roomId);
+        }
         sendMessage(chatMessage, chatService);
+    }
+    public void handleSessionClosed(WebSocketSession session, ChatService chatService) {
+        sessions.remove(session);
+        log.debug("Session closed: " + session);
+
+        if (this.isSessionEmpty()) {
+            // 채팅방이 빈 상태이면 채팅방을 제거
+            chatService.removeRoom(this.roomId);
+        }
     }
 
     private <T> void sendMessage(T message, ChatService chatService) {

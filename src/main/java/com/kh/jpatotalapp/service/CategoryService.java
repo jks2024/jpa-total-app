@@ -80,5 +80,4 @@ public class CategoryService {
         categoryDto.setEmail(category.getMember().getEmail());
         return categoryDto;
     }
-
 }

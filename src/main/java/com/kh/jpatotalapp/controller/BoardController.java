@@ -68,5 +68,10 @@ public class BoardController {
         Integer pageCnt = boardService.getBoards(pageRequest);
         return ResponseEntity.ok(pageCnt);
     }
-
+    // 회원 이메일로 게시글 조회
+    @GetMapping("/list/email")
+    public ResponseEntity<List<BoardDto>> boardListByEmail(@RequestParam String email) {
+        List<BoardDto> list = boardService.getBoardListByEmail(email);
+        return ResponseEntity.ok(list);
+    }
 }

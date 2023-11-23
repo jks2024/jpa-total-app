@@ -43,6 +43,14 @@ public class ChatService {
         chatRooms.put(randomId, chatRoom);
         return chatRoom;
     }
+    public void removeRoom(String roomId) {
+        ChatRoomResDto room = chatRooms.get(roomId);
+        if (room != null) {
+            if (room.isSessionEmpty()) {
+                chatRooms.remove(roomId);
+            }
+        }
+    }
     public <T> void sendMessage(WebSocketSession session, T message) {
         try {
             session.sendMessage(new TextMessage(objectMapper.writeValueAsString(message)));
