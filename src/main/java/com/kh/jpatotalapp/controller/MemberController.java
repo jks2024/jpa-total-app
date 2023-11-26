@@ -52,25 +52,6 @@ public class MemberController {
         boolean isTrue = memberService.modifyMember(memberDto);
         return ResponseEntity.ok(isTrue);
     }
-    // 회원 등록
-//    @PostMapping("/new")
-//    public ResponseEntity<Boolean> memberRegister(@RequestBody MemberReqDto memberDto) {
-//        boolean isTrue = memberService.saveMember(memberDto);
-//        return ResponseEntity.ok(isTrue);
-//    }
-    // 로그인
-//    @PostMapping("/login")
-//    public ResponseEntity<Boolean> memberLogin(@RequestBody MemberReqDto memberDto) {
-//        boolean isTrue = memberService.login(memberDto.getEmail(), memberDto.getPwd());
-//        return ResponseEntity.ok(isTrue);
-//    }
-    // 회원 존재 여부 확인
-    @GetMapping("/check")
-    public ResponseEntity<Boolean> isMember(@RequestParam String email) {
-        log.info("email: {}", email);
-        boolean isReg = memberService.isMember(email);
-        return ResponseEntity.ok(!isReg);
-    }
     // 회원 삭제
     @DeleteMapping("/del/{email}")
     public ResponseEntity<Boolean> memberDelete(@PathVariable String email) {

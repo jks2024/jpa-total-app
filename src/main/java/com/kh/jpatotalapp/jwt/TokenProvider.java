@@ -56,8 +56,6 @@ public class TokenProvider {
                 .signWith(key, SignatureAlgorithm.HS512)
                 .compact();
 
-        log.info("accessToken: {}", accessToken);
-
         // 리프레시 토큰 생성
         String refreshToken = io.jsonwebtoken.Jwts.builder()
                 .setExpiration(refreshTokenExpiresIn)
@@ -76,8 +74,6 @@ public class TokenProvider {
     public Authentication getAuthentication(String accessToken) {
         // 토큰 복호화
         Claims claims = parseClaims(accessToken);
-
-        log.info("claims: {}", claims);
 
         // 토큰 복호화에 실패하면
         if (claims.get(AUTHORITIES_KEY) == null) {
