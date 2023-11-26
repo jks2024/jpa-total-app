@@ -14,7 +14,7 @@ import static com.kh.jpatotalapp.utils.Common.CORS_ORIGIN;
 @Slf4j
 @RestController
 @RequestMapping("/auth")
-@CrossOrigin(origins = CORS_ORIGIN)
+//@CrossOrigin(origins = CORS_ORIGIN)
 @RequiredArgsConstructor
 public class AuthController {
     private final AuthService authService;
