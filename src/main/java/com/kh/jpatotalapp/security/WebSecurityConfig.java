@@ -21,14 +21,14 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebSecurityConfig implements WebMvcConfigurer {
 
     private final TokenProvider tokenProvider;
-    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-    private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
+    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint; // 인증 실패 시 처리할 클래스
+    private final JwtAccessDeniedHandler jwtAccessDeniedHandler; // 인가 실패 시 처리할 클래스
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(); // BCrypt 암호화 객체를 Bean으로 등록
     }
 
-    @Bean
+    @Bean // SecurityFilterChain 객체를 Bean으로 등록
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
 

@@ -33,12 +33,12 @@ public class TokenProvider {
 
     // 주의점 : @Value 어노테이션은 springframework의 어노테이션이다.
     public TokenProvider(@Value("${jwt.secret}") String secretKey) {
-        this.key = Keys.secretKeyFor(SignatureAlgorithm.HS512);
+        this.key = Keys.secretKeyFor(SignatureAlgorithm.HS512); // HS512 알고리즘을 사용하는 키 생성
     }
 
     // 토큰 생성
     public TokenDto generateTokenDto(Authentication authentication) {
-        // 권한 정보 문자열 생성
+        // 권한 정보 문자열 생성,
         String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
@@ -86,7 +86,7 @@ public class TokenProvider {
                         .map(SimpleGrantedAuthority::new)
                         .collect(Collectors.toList());
 
-        // 권한 정보들을 이용해 유저 객체를 만들어서 반환
+        // 권한 정보들을 이용해 유저 객체를 만들어서 반환, 여기서 User 객체는 UserDetails 인터페이스를 구현한 객체
         User principal = new User(claims.getSubject(), "", authorities);
 
         // 유저 객체, 토큰, 권한 정보들을 이용해 인증 객체를 생성해서 반환
