@@ -34,19 +34,23 @@ public class AuthService {
         return MemberResDto.of(memberRepository.save(member));
     }
     public TokenDto login(MemberReqDto requestDto) {
-//        try {
-            UsernamePasswordAuthenticationToken authenticationToken = requestDto.toAuthentication();
-            log.info("authenticationToken: {}", authenticationToken);
+        UsernamePasswordAuthenticationToken authenticationToken = requestDto.toAuthentication();
+        log.info("authenticationToken: {}", authenticationToken);
 
-            Authentication authentication = managerBuilder.getObject().authenticate(authenticationToken);
-            log.info("authentication: {}", authentication);
+        Authentication authentication = managerBuilder.getObject().authenticate(authenticationToken);
+        log.info("authentication: {}", authentication);
 
-            return tokenProvider.generateTokenDto(authentication);
-//        } catch (Exception e) {
-//            log.error("Login error: ", e);
-//            throw e;
-//        }
+        return tokenProvider.generateTokenDto(authentication);
     }
 
+    // accessToken 재발급
+    public String createAccessToken(String refreshToken) {
+//        if (!tokenProvider.validateToken(refreshToken)) {
+//            throw new RuntimeException("Refresh Token이 유효하지 않습니다.");
+//        }
 
+        // Refresh Token에서 회원 정보 추출
+        Authentication authentication = tokenProvider.getAuthentication(refreshToken);
+        return tokenProvider.generateAccessToken(authentication);
+    }
 }

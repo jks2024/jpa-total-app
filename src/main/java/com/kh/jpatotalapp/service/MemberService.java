@@ -10,7 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import static com.kh.jpatotalapp.security.SecurityUtil.getCurrentMemberId;
 
 @Slf4j
 @Service
@@ -28,18 +28,17 @@ public class MemberService {
         Member member = memberRepository.findByEmail(email).orElseThrow(
                 () -> new RuntimeException("해당 회원이 존재하지 않습니다.")
         );
+
         return convertEntityToDto(member);
     }
-    // 회원 가입
-//    public boolean saveMember(MemberReqDto memberDto) {
-//        Member member = new Member();
-//        member.setEmail(memberDto.getEmail());
-//        member.setName(memberDto.getName());
-//        member.setPassword(memberDto.getPassword());
-//        member.setImage(memberDto.getImage());
-//        memberRepository.save(member);
-//        return true;
-//    }
+    // 개인 정보 조회
+    public MemberResDto getMemberInfo() {
+        Long id = getCurrentMemberId();
+        Member member = memberRepository.findById(id).orElseThrow(
+                () -> new RuntimeException("해당 회원이 존재하지 않습니다.")
+        );
+        return convertEntityToDto(member);
+    }
     // 회원 수정
     public boolean modifyMember(MemberReqDto memberDto) {
         try {
@@ -56,13 +55,6 @@ public class MemberService {
         }
     }
 
-    // 로그인
-//    public boolean login(String email, String pwd) {
-//        log.info("email: {}, pwd: {}", email, pwd);
-//        Optional<Member> member = memberRepository.findByEmailAndPassword(email, pwd);
-//        log.info("member: {}", member);
-//        return member.isPresent();
-//    }
     // 회원 삭제
     public boolean deleteMember(String email) {
         try {

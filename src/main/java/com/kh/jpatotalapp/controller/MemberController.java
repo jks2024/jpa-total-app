@@ -45,6 +45,13 @@ public class MemberController {
         MemberResDto memberDto = memberService.getMemberDetail(email);
         return ResponseEntity.ok(memberDto);
     }
+    // 개인 정보 조회
+    @GetMapping("/info")
+    public ResponseEntity<MemberResDto> memberInfo() {
+        MemberResDto memberDto = memberService.getMemberInfo();
+        return ResponseEntity.ok(memberDto);
+    }
+
     // 회원 수정
     @PutMapping("/modify")
     public ResponseEntity<Boolean> memberModify(@RequestBody MemberReqDto memberDto) {
@@ -52,7 +59,7 @@ public class MemberController {
         boolean isTrue = memberService.modifyMember(memberDto);
         return ResponseEntity.ok(isTrue);
     }
-    // 회원 삭제
+    // 회원 탈퇴
     @DeleteMapping("/del/{email}")
     public ResponseEntity<Boolean> memberDelete(@PathVariable String email) {
         boolean isTrue = memberService.deleteMember(email);

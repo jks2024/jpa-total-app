@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 public class TokenProvider {
     private static final String AUTHORITIES_KEY = "auth"; // 토큰에 저장되는 권한 정보의 key
     private static final String BEARER_TYPE = "Bearer"; // 토큰의 타입
-    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24L; // 24시간
+    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 3; // 10
     private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 7L; // 7일
     private final Key key; // 토큰을 서명하기 위한 Key
 
@@ -59,6 +59,8 @@ public class TokenProvider {
         // 리프레시 토큰 생성
         String refreshToken = io.jsonwebtoken.Jwts.builder()
                 .setExpiration(refreshTokenExpiresIn)
+                .setSubject(authentication.getName())
+                .claim(AUTHORITIES_KEY, authorities)
                 .signWith(key, SignatureAlgorithm.HS512)
                 .compact();
 
@@ -71,6 +73,7 @@ public class TokenProvider {
                 .refreshTokenExpiresIn(refreshTokenExpiresIn.getTime())
                 .build();
     }
+    // 토큰에서 회원 정보 추출
     public Authentication getAuthentication(String accessToken) {
         // 토큰 복호화
         Claims claims = parseClaims(accessToken);
@@ -92,10 +95,11 @@ public class TokenProvider {
         // 유저 객체, 토큰, 권한 정보들을 이용해 인증 객체를 생성해서 반환
         return new UsernamePasswordAuthenticationToken(principal, accessToken, authorities);
     }
+
     // 토큰의 유효성 검증
     public boolean validateToken(String token) {
         try {
-            io.jsonwebtoken.Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
+              io.jsonwebtoken.Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
         } catch (SecurityException | io.jsonwebtoken.MalformedJwtException e) {
             log.info("잘못된 JWT 서명입니다.");
@@ -116,4 +120,10 @@ public class TokenProvider {
             return e.getClaims();
         }
     }
+
+    // access 토큰 재발급
+    public String generateAccessToken(Authentication authentication) {
+        return generateTokenDto(authentication).getAccessToken();
+    }
+
 }
