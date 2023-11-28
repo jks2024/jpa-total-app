@@ -45,11 +45,6 @@ public class AuthService {
 
     // accessToken 재발급
     public String createAccessToken(String refreshToken) {
-//        if (!tokenProvider.validateToken(refreshToken)) {
-//            throw new RuntimeException("Refresh Token이 유효하지 않습니다.");
-//        }
-
-        // Refresh Token에서 회원 정보 추출
         Authentication authentication = tokenProvider.getAuthentication(refreshToken);
         return tokenProvider.generateAccessToken(authentication);
     }
