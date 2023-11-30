@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.kh.jpatotalapp.security.SecurityUtil.getCurrentMemberId;
+
 @Service
 @RequiredArgsConstructor
 public class BoardService {
@@ -25,7 +27,8 @@ public class BoardService {
     public boolean saveBoard(BoardDto boardDto) {
         try {
             Board board = new Board();
-            Member member = memberRepository.findByEmail(boardDto.getEmail()).orElseThrow(
+            Long memberId = getCurrentMemberId();
+            Member member = memberRepository.findById(memberId).orElseThrow(
                     () -> new RuntimeException("해당 회원이 존재하지 않습니다.")
             );
             Category category = categoryRepository.findById(boardDto.getCategoryId()).orElseThrow(
