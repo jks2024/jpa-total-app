@@ -18,6 +18,8 @@ public class Board {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long boardId;
     private String title;
+    @Lob
+    @Column(length = 10000) // 예시로 10000자를 지정
     private String content;
     private String imgPath;
     private LocalDateTime regDate;
