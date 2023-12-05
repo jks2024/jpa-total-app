@@ -33,7 +33,7 @@ public class MovieScheduleService {
             List<Map<String, String>> movieList = objectMapper.readValue(movieDataJson, new TypeReference<List<Map<String, String>>>() {});
             movieService.processAndSaveMovieData(movieList);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("영화 데이터 수집 실패");
         }
     }
 }
