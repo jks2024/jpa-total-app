@@ -11,7 +11,6 @@ import java.util.List;
 import static com.kh.jpatotalapp.utils.Common.CORS_ORIGIN;
 
 @Slf4j
-//@CrossOrigin(origins = CORS_ORIGIN)
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
@@ -31,7 +30,6 @@ public class MemberController {
         int pageCnt = memberService.getMemberPage(pageRequest);
         return ResponseEntity.ok(pageCnt);
     }
-
     // 회원 조회 페이지네이션
     @GetMapping("/list/page")
     public ResponseEntity<List<MemberResDto>> memberList(@RequestParam(defaultValue = "0") int page,
