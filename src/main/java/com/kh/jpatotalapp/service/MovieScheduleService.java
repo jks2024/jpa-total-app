@@ -21,15 +21,19 @@ public class MovieScheduleService {
     private final MovieService movieService;
     private final ObjectMapper objectMapper; // Jackson ObjectMapper
 
-    //@Scheduled(cron = "0 0 0/1 * * *") // 매 시간마다 실행
-    @Scheduled(cron = "0 * * * * *") // 매분마다 실행
+    @Scheduled(cron = "0 0 0/1 * * *") // 매 시간마다 실행
+    //@Scheduled(cron = "0 * * * * *") // 매분마다 실행
     public void movieSchedule() throws JsonProcessingException {
         movieService.deleteAll();
         String URL = "http://127.0.0.1:5000/api/movie";
-        ResponseEntity<String> response = restTemplate.getForEntity(URL, String.class);
-        String movieDataJson = response.getBody();
-        System.out.println(movieDataJson);
-        List<Map<String, String>> movieList = objectMapper.readValue(movieDataJson, new TypeReference<List<Map<String, String>>>() {});
-        movieService.processAndSaveMovieData(movieList);
+        try {
+            ResponseEntity<String> response = restTemplate.getForEntity(URL, String.class);
+            String movieDataJson = response.getBody();
+            System.out.println(movieDataJson);
+            List<Map<String, String>> movieList = objectMapper.readValue(movieDataJson, new TypeReference<List<Map<String, String>>>() {});
+            movieService.processAndSaveMovieData(movieList);
+        } catch (Exception e) {
+            log.error("영화 데이터를 가져오는데 실패했습니다.");
+        }
     }
 }
