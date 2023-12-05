@@ -1,6 +1,8 @@
 package com.kh.jpatotalapp.controller;
+import com.kh.jpatotalapp.dto.BoardDto;
 import com.kh.jpatotalapp.dto.MemberReqDto;
 import com.kh.jpatotalapp.dto.MemberResDto;
+import com.kh.jpatotalapp.entity.Member;
 import com.kh.jpatotalapp.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -1,4 +1,5 @@
 package com.kh.jpatotalapp.service;
+import com.kh.jpatotalapp.dto.BoardDto;
 import com.kh.jpatotalapp.dto.MemberReqDto;
 import com.kh.jpatotalapp.dto.MemberResDto;
 import com.kh.jpatotalapp.entity.Member;
@@ -17,6 +18,7 @@ import static com.kh.jpatotalapp.security.SecurityUtil.getCurrentMemberId;
 @RequiredArgsConstructor
 public class MemberService {
     private final MemberRepository memberRepository;
+    private final BoardService boardService;
 
     // 회원 가입 여부 확인
     public boolean isMember(String email) {
