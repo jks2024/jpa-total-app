@@ -1,6 +1,8 @@
 package com.kh.jpatotalapp.controller;
+import com.kh.jpatotalapp.dto.BoardDto;
 import com.kh.jpatotalapp.dto.MemberReqDto;
 import com.kh.jpatotalapp.dto.MemberResDto;
+import com.kh.jpatotalapp.entity.Member;
 import com.kh.jpatotalapp.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,7 +13,6 @@ import java.util.List;
 import static com.kh.jpatotalapp.utils.Common.CORS_ORIGIN;
 
 @Slf4j
-//@CrossOrigin(origins = CORS_ORIGIN)
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -60,4 +61,17 @@ public class MovieService {
         return movieDto;
     }
 
+    public void processAndSaveMovieData(List<Map<String, String>> movieList) {
+        for(Map<String, String> data : movieList) {
+            Movie movie = new Movie();
+            movie.setMovieRank(data.get("rank"));
+            movie.setImage(data.get("image"));
+            movie.setTitle(data.get("title"));
+            movie.setScore(data.get("score"));
+            movie.setRate(data.get("eval_num"));
+            movie.setReservation(data.get("reservation"));
+            movie.setDate(data.get("open_date"));
+            this.saveMovie(movie);
+        }
+    }
 }

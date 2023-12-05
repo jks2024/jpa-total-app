@@ -1,6 +1,7 @@
 package com.kh.jpatotalapp.controller;
 
-import com.kh.jpatotalapp.service.ElasticsearchService;
+import com.kh.jpatotalapp.entity.EcommerceData;
+import com.kh.jpatotalapp.service.EcommerceService;
 import lombok.RequiredArgsConstructor;
 import org.elasticsearch.action.search.SearchResponse;
 import org.springframework.http.ResponseEntity;
@@ -16,8 +17,8 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/elastic/ecommerce")
-public class ElasticController {
-    private final ElasticsearchService elasticsearchService;
+public class EcommerceController {
+    private final EcommerceService elasticsearchService;
     @GetMapping("/search") // 단일 필드 검색
     public ResponseEntity<?> searchKeyword(@RequestParam String keyword) throws Exception {
         return ResponseEntity.ok(elasticsearchService.searchKeyword(keyword));
@@ -38,5 +39,11 @@ public class ElasticController {
     @GetMapping("/aggregation")
     public ResponseEntity<?> aggregation() throws Exception {
         return ResponseEntity.ok(elasticsearchService.aggregation());
+    }
+    // 전체 조회
+    @GetMapping("/all")
+    public ResponseEntity<List<EcommerceData>> getAllEcommerceData() {
+        List<EcommerceData> data = elasticsearchService.findAll();
+        return ResponseEntity.ok(data);
     }
 }

@@ -30,19 +30,6 @@ public class MovieScheduleService {
         String movieDataJson = response.getBody();
         System.out.println(movieDataJson);
         List<Map<String, String>> movieList = objectMapper.readValue(movieDataJson, new TypeReference<List<Map<String, String>>>() {});
-        for (Map<String, String> data : movieList) {
-            Movie movie = new Movie();
-            // 영화 정보 설정
-            movie.setMovieRank(data.get("rank"));
-            movie.setImage(data.get("image"));
-            movie.setTitle(data.get("title"));
-            movie.setScore(data.get("score"));
-            movie.setRate(data.get("eval_num"));
-            movie.setReservation(data.get("reservation"));
-            movie.setDate(data.get("open_date"));
-
-            // 영화 정보 저장
-            movieService.saveMovie(movie);
-        }
+        movieService.processAndSaveMovieData(movieList);
     }
 }

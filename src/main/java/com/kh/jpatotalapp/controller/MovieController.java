@@ -15,7 +15,6 @@ import java.util.Map;
 import static com.kh.jpatotalapp.utils.Common.CORS_ORIGIN;
 
 @Slf4j
-//@CrossOrigin(origins = CORS_ORIGIN)
 @RestController
 @RequestMapping("/movies")
 @RequiredArgsConstructor
@@ -25,18 +24,7 @@ public class MovieController {
     @PostMapping("/insert")
     public ResponseEntity<Boolean> movieInsert(@RequestBody List<Map<String, String>> movieList) {
         log.info("movieList : {}", movieList);
-
-        for(Map<String, String> data : movieList) {
-            Movie movie = new Movie();
-            movie.setMovieRank(data.get("rank"));
-            movie.setImage(data.get("image"));
-            movie.setTitle(data.get("title"));
-            movie.setScore(data.get("score"));
-            movie.setRate(data.get("eval_num"));
-            movie.setReservation(data.get("reservation"));
-            movie.setDate(data.get("open_date"));
-            movieService.saveMovie(movie);
-        }
+        movieService.processAndSaveMovieData(movieList);
         return ResponseEntity.ok(true);
     }
     // 영화 전체 삭제
