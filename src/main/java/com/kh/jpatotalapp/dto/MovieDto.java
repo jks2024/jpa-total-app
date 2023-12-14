@@ -13,7 +13,7 @@ public class MovieDto {
     private String image;
     private String title;
     private String score;
-    private String rate;
     private String reservation;
     private String date;
+    private String cumulative;
 }

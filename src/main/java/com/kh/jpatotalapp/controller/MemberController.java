@@ -63,6 +63,7 @@ public class MemberController {
     // 회원 탈퇴
     @DeleteMapping("/del/{email}")
     public ResponseEntity<Boolean> memberDelete(@PathVariable String email) {
+        log.info("email: {}", email);
         boolean isTrue = memberService.deleteMember(email);
         return ResponseEntity.ok(isTrue);
     }

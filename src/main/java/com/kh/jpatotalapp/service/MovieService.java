@@ -55,9 +55,9 @@ public class MovieService {
         movieDto.setImage(movie.getImage());
         movieDto.setTitle(movie.getTitle());
         movieDto.setScore(movie.getScore());
-        movieDto.setRate(movie.getRate());
         movieDto.setReservation(movie.getReservation());
         movieDto.setDate(movie.getDate());
+        movieDto.setCumulative(movie.getCumulative());
         return movieDto;
     }
 
@@ -68,9 +68,9 @@ public class MovieService {
             movie.setImage(data.get("image"));
             movie.setTitle(data.get("title"));
             movie.setScore(data.get("score"));
-            movie.setRate(data.get("eval_num"));
             movie.setReservation(data.get("reservation"));
             movie.setDate(data.get("open_date"));
+            movie.setCumulative(data.get("cumulative"));
             this.saveMovie(movie);
         }
     }

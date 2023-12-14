@@ -21,8 +21,8 @@ public class MovieScheduleService {
     private final MovieService movieService;
     private final ObjectMapper objectMapper; // Jackson ObjectMapper
 
-    @Scheduled(cron = "0 0 0/1 * * *") // 매 시간마다 실행
-    //@Scheduled(cron = "0 * * * * *") // 매분마다 실행
+    //@Scheduled(cron = "0 0 0/1 * * *") // 매 시간마다 실행
+    @Scheduled(cron = "0 * * * * *") // 매분마다 실행
     public void movieSchedule() throws JsonProcessingException {
         movieService.deleteAll();
         String URL = "http://127.0.0.1:5000/api/movie";
