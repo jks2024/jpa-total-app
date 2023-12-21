@@ -50,3 +50,50 @@ tasks.named('bootBuildImage') {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+
+def reactDir = "$projectDir/src/main/react"
+
+sourceSets {
+	main {
+		resources {
+			srcDirs = ["$projectDir/src/main/resources"]
+		}
+	}
+}
+
+processResources { dependsOn "copyReactBuildFiles" }
+
+task installReact(type: Exec) {
+	workingDir "$reactDir"
+	inputs.dir "$reactDir"
+	group = BasePlugin.BUILD_GROUP
+	if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
+		commandLine "yarn.cmd", "audit", "fix"
+		commandLine 'yarn.cmd', 'install'
+	} else {
+		commandLine "yarn", "audit", "fix"
+		commandLine 'yarn', 'install'
+	}
+}
+
+task buildReact(type: Exec) {
+	dependsOn "installReact"
+	workingDir "$reactDir"
+	inputs.dir "$reactDir"
+	group = BasePlugin.BUILD_GROUP
+	if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
+		commandLine "yarn.cmd", "run", "build"
+	} else {
+		commandLine "yarn", "run", "build"
+	}
+}
+
+task copyReactBuildFiles(type: Copy) {
+	dependsOn "buildReact"
+	from "$reactDir/build"
+	into "$projectDir/src/main/resources/static"
+}
+jar {
+	enabled = false
+}
