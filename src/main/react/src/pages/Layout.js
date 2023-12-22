@@ -22,7 +22,6 @@ import { CgProfile } from "react-icons/cg";
 import { useNavigate } from "react-router-dom";
 import AxiosApi from "../api/AxiosApi";
 import useWeather from "../hooks/useWeather";
-import Common from "../utils/Common";
 
 // 사이드바 메뉴를 구성 합니다.
 const Layout = () => {

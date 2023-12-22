@@ -42,14 +42,12 @@ public class WebSecurityConfig implements WebMvcConfigurer {
                 .accessDeniedHandler(jwtAccessDeniedHandler)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/auth/**", "/ws/**", "/movies/**", "/elastic/**", "/", "/static/**").permitAll()
+                .antMatchers("/", "/static/**", "/auth/**", "/ws/**", "/movies/**", "/elastic/**").permitAll()
                 .antMatchers("/v2/api-docs", "/swagger-resources/**", "/swagger-ui.html", "/webjars/**", "/swagger/**", "/sign-api/exception").permitAll()
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .apply(new JwtSecurityConfig(tokenProvider))
-                .and()
-                .cors(); // .and().cors() 추가 된 부분
+                .apply(new JwtSecurityConfig(tokenProvider));
 
         return http.build();
     }

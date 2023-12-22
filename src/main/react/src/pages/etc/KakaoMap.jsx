@@ -1,7 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import styled from "styled-components";
 import useWeather from "../../hooks/useWeather";
-const { kakao } = window;
 
 const MapContainer = styled.div`
   width: 100%;
@@ -10,27 +9,27 @@ const MapContainer = styled.div`
 
 const KakaoMap = () => {
   const { location } = useWeather();
+  const mapRef = useRef(null);
+
   console.log(location);
   useEffect(() => {
-    const container = document.getElementById("map"); // 지도를 표시할 div
+    const container = mapRef.current;
     const options = {
-      center: new kakao.maps.LatLng(location.lat, location.long), // 지도의 중심좌표
+      center: new window.kakao.maps.LatLng(location.lat, location.long), // 지도의 중심좌표
       level: 3, // 지도의 확대 레벨
     };
 
-    const map = new kakao.maps.Map(container, options);
-    // Create a marker
-    const marker = new kakao.maps.Marker({
-      position: new kakao.maps.LatLng(location.lat, location.long), // 마커의 위치
+    const map = new window.kakao.maps.Map(container, options);
+    const marker = new window.kakao.maps.Marker({
+      position: new window.kakao.maps.LatLng(location.lat, location.long), // 마커의 위치
     });
-    // To add the marker to the map, call setMap();
     marker.setMap(map);
   }, [location]);
 
   return (
-    <div>
-      <MapContainer id="map"></MapContainer>
-    </div>
+      <div>
+        <MapContainer ref={mapRef}></MapContainer>
+      </div>
   );
 };
 

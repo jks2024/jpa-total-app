@@ -79,10 +79,10 @@ const GenderChart = () => {
       try {
         const rsp = await AxiosApi.genderChart(region);
         if (rsp.status === 200) {
-          setChartData({
-            labels: Array.from(
-              { length: rsp.data.female.length },
-              (_, i) => i + 1
+          setChartData({ // 차트 데이터 업데이트
+            labels: Array.from( // Array.from() : 배열을 만드는 함수
+              { length: rsp.data.female.length }, // length: 배열의 길이
+              (_, i) => i + 1 // 배열의 요소를 만드는 함수
             ),
             datasets: [
               {

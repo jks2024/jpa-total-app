@@ -85,7 +85,7 @@ task buildReact(type: Exec) { // 리액트 빌드
 	if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
 		commandLine "yarn.cmd", "run", "build"
 	} else {
-		commandLine "yarn", "run", "build"
+		commandLine "yarn", "run", "build" // 리액트 빌드
 	}
 }
 

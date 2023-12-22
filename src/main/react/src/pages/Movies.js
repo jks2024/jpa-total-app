@@ -93,7 +93,7 @@ function Movies() {
   return (
     <>
       <CardContainer>
-        {movies.map((movie) => (
+        {movies && movies.map((movie) => (
           <MovieCardView
             key={movie.rank}
             rank={movie.rank}
