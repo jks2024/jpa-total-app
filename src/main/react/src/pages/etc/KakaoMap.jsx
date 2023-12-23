@@ -74,15 +74,14 @@ const InfoWindowContent = styled.div`
 
 const KakaoMap = () => {
   const { location } = useWeather();
-  const mapRef = useRef(null);
-  const infoWindowRef = useRef(null);
+  const mapRef = useRef(null); // 지도를 담을 영역의 DOM 레퍼런스
   const [searchQuery, setSearchQuery] = useState("");
-  const [map, setMap] = useState(null);
-  const [markers, setMarkers] = useState([]);
-  const [selectedPlace, setSelectedPlace] = useState(null);
+  const [map, setMap] = useState(null); // 지도 객체
+  const [markers, setMarkers] = useState([]); // 마커 배열
+  const [selectedPlace, setSelectedPlace] = useState(null); // 선택된 장소
 
   useEffect(() => {
-    const container = mapRef.current;
+    const container = mapRef.current; // 지도를 담을 영역의 DOM 레퍼런스
     const options = {
       center: new window.kakao.maps.LatLng(location.lat, location.long),
       level: 3,
@@ -98,50 +97,29 @@ const KakaoMap = () => {
 
   const handleSearchButtonClick = () => {
     if (map && searchQuery) {
-      const places = new window.kakao.maps.services.Places();
+      const places = new window.kakao.maps.services.Places(); // 장소 검색 객체 생성
 
       markers.forEach((marker) => marker.setMap(null)); //  마커 지우기
 
       places.keywordSearch(searchQuery, (data, status) => {
-        console.log("handleSearchButtonClick : " + searchQuery);
+        // 키워드로 장소 검색
         if (status === window.kakao.maps.services.Status.OK) {
-          const newMarkers = [];
-          for (let i = 0; i < data.length; i++) {
-            const place = data[i];
-            console.log(place);
+          // 검색 성공 시
+          const newMarkers = data.map((place) => {
+            // 검색된 장소 위치를 기준으로 마커 생성
             const placeMarker = new window.kakao.maps.Marker({
-              position: new window.kakao.maps.LatLng(place.y, place.x),
+              // 마커 생성
+              position: new window.kakao.maps.LatLng(place.y, place.x), // 마커 위치
             });
 
-            placeMarker.setMap(map);
+            placeMarker.setMap(map); // 지도에 마커 표시
 
             window.kakao.maps.event.addListener(placeMarker, "click", () => {
               setSelectedPlace(place);
-
-              // InfoWindow 팝업 스타일링 및 표시
-              const infoWindow = new window.kakao.maps.InfoWindow({
-                content: (
-                  <InfoWindowContent>
-                    <strong>{place.place_name}</strong>
-                    <br />
-                    주소: {place.address_name}
-                    <br />
-                    전화번호: {place.phone}
-                  </InfoWindowContent>
-                ),
-              });
-
-              // 이전 InfoWindow 닫기
-              if (infoWindowRef.current) {
-                infoWindowRef.current.close();
-              }
-
-              infoWindow.open(map, placeMarker);
-              infoWindowRef.current = infoWindow;
             });
 
-            newMarkers.push(placeMarker);
-          }
+            return placeMarker;
+          });
           setMarkers(newMarkers);
         }
       });
