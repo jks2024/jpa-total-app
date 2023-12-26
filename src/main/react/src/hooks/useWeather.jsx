@@ -49,9 +49,10 @@ const useWeather = () => {
           },
         }
       );
-      const fullAddress = response.data.documents[0].address;
-      const neighborhoodAddress = `${fullAddress.region_1depth_name} ${fullAddress.region_2depth_name} ${fullAddress.region_3depth_name}`;
-      setAddr(neighborhoodAddress);
+      const fullAddress = response.data.documents[0].address.address_name;
+      //const fullAddress = response.data.documents[0].address;
+      //const neighborhoodAddress = `${fullAddress.region_1depth_name} ${fullAddress.region_2depth_name} ${fullAddress.region_3depth_name}`;
+      setAddr(fullAddress);
     } catch (error) {
       console.error("Kakao Geocoding error:", error);
     }

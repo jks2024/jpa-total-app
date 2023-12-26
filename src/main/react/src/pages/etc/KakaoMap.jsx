@@ -96,6 +96,7 @@ const KakaoMap = () => {
   };
 
   const handleSearchButtonClick = () => {
+    console.log("검색 : ", searchQuery);
     if (map && searchQuery) {
       const places = new window.kakao.maps.services.Places(); // 장소 검색 객체 생성
 
@@ -136,7 +137,7 @@ const KakaoMap = () => {
             placeholder="검색할 장소를 입력하세요"
             value={searchQuery}
             onChange={handleSearchInputChange}
-            onKeyPress={(e) => {
+            onKeyUp={(e) => {
               if (e.key === "Enter") {
                 handleSearchButtonClick();
               }

@@ -6,6 +6,7 @@ moment.locale("ko"); // 한글 설정 적용
 const Common = {
   KH_DOMAIN: "",
   KH_SOCKET_URL: "ws://localhost:8111/ws/chat",
+  KAKAOKEY: "2dda918f299fb6e8325412499bf9a08a",
 
   timeFromNow: (timestamp) => {
     return moment(timestamp).fromNow();
@@ -18,6 +19,35 @@ const Common = {
     const hour = ("0" + date.getHours()).slice(-2);
     const minute = ("0" + date.getMinutes()).slice(-2);
     return `${year}년 ${month}월 ${day}일 ${hour}시 ${minute}분`;
+  },
+
+  getAddrCoordination: async (addr) => {
+    try {
+      const response = await axios.get(
+        `https://dapi.kakao.com/v2/local/search/address.json?query=${addr}`,
+        {
+          headers: {
+            Authorization: `KakaoAK ${Common.KAKAOKEY}`,
+          },
+        }
+      );
+
+      const result = response.data;
+      if (result.documents.length > 0) {
+        const firstResult = result.documents[0];
+        console.log(firstResult);
+        console.log(firstResult.address);
+        console.log(firstResult.address.y);
+        console.log(firstResult.address.x);
+        const { x, y } = firstResult.address;
+        return { latitude: y, longitude: x };
+      } else {
+        return null;
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      return null;
+    }
   },
 
   getAccessToken: () => {
