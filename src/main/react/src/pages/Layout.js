@@ -42,18 +42,18 @@ const Layout = () => {
 
   useEffect(() => {
     // 주기적으로 Common.getAddrCoordination(addr) 함수 호출을 설정합니다.
-    const intervalId = setInterval(async () => {
-      if (addr) {
-        const { latitude, longitude } = await Common.getAddrCoordination(addr);
-        console.log("위도 : ", latitude);
-        console.log("경도 : ", longitude);
-      }
-    }, 5000); // 5초마다 호출하려면 5000ms로 설정합니다.
+    // const intervalId = setInterval(async () => {
+    //   if (addr) {
+    //     const { latitude, longitude } = await Common.getAddrCoordination(addr);
+    //     console.log("위도 : ", latitude);
+    //     console.log("경도 : ", longitude);
+    //   }
+    // }, 5000); // 5초마다 호출하려면 5000ms로 설정합니다.
 
     // 컴포넌트가 언마운트될 때 clearInterval을 사용하여 인터벌을 해제합니다.
-    return () => {
-      clearInterval(intervalId);
-    };
+    // return () => {
+    //   clearInterval(intervalId);
+    // };
   }, [addr]);
 
   useEffect(() => {
